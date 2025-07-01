@@ -1,13 +1,17 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import * as Yup from 'yup';
+import { UserContext } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(null)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+  const {token, setToken} = useContext(UserContext);
+  const navigate =useNavigate()
 
   function handleSubmit(values) {
     setLoading(true);
@@ -17,6 +21,11 @@ export default function Login() {
       .then(({data}) => {
         setLoading(false);
         setSuccess(data.msg);
+        localStorage.setItem("token","3b8ny__"+ data.token);
+        setToken("3b8ny__"+data.token);
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
       })
       .catch((error) => {
         
@@ -46,15 +55,15 @@ export default function Login() {
       <form onSubmit={formik.handleSubmit} >
         
         <div className="mb-5">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-          <input onBlur={formik.handleBlur} onChange={formik.handleChange} type="email" name='email' value={formik.values.email} id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
+          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">Your email</label>
+          <input onBlur={formik.handleBlur} onChange={formik.handleChange} type="email" name='email' value={formik.values.email} id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@gmail.com" required />
         </div>
         {formik.touched.email && formik.errors.email && <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
           <span className="font-medium">{formik.errors.email}</span>
         </div>}
         <div className="mb-5">
-          <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
-          <input onBlur={formik.handleBlur} onChange={formik.handleChange} type="password" name='password' value={formik.values.password} id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
+          <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">Your password</label>
+          <input onBlur={formik.handleBlur} onChange={formik.handleChange} type="password" name='password' value={formik.values.password} id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Aa123456" required />
         </div>
         {formik.touched.password && formik.errors.password && <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
           <span className="font-medium">{formik.errors.password}</span>
