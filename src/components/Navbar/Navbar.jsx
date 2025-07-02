@@ -1,10 +1,15 @@
 import { Link, NavLink } from "react-router-dom";
+import { UserContext } from './../../context/UserContext';
+import { useContext } from "react";
 
 export default function Navbar() {
+    const { token, setToken } = useContext(UserContext);
+
+  function logout() {
+    localStorage.removeItem("token");
+    setToken(null);
+  }
   return <>
-
-
-  
   <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
     <span className="sr-only">Open sidebar</span>
     <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -15,19 +20,21 @@ export default function Navbar() {
     <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
         <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white ps-2.5 mb-5 block">Note App</span>
       <ul className="space-y-2 font-medium">
-        
-        <li>
+        {token &&<><li>
           <NavLink to='' className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <i className="fa-solid fa-house"></i>
             <span className="flex-1 ms-3 whitespace-nowrap">Home</span>
           </NavLink>
         </li>
         <li>
-          <Link to='/login' className="cursor-pointer flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <Link onClick={logout} to='/login' className="cursor-pointer flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <i className="fa-solid fa-right-to-bracket fa-rotate-180"></i>
             <span className="flex-1 ms-3 whitespace-nowrap">Log Out</span>
           </Link>
         </li>
+          </> 
+        }
+        
         <li>
           <NavLink to='login' className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <i className="fa-solid fa-right-to-bracket"></i>
